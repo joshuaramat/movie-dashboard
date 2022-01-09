@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require('path');
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -39,6 +40,8 @@ if (process.env.NODE_ENV == "development") {
 app.use("/api", routes);
 app.use("/api", authRoutes);
 app.use("/api", userRouters);
+
+app.use('/files', express.static(path.resolve(__dirname, ".", "files")))
 
 //port
 const port = process.env.PORT || 3306;

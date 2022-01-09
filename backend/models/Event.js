@@ -10,6 +10,13 @@ const EventSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }
+},
+{
+    toJSON: {
+        virtuals: true
+    }
 })
+
+EventSchema.virtual('thumbnail_url').get(function () { return `http://localhost:3306/files/${this.thumbnail}`})
 
 module.exports = mongoose.model('Event', EventSchema)
