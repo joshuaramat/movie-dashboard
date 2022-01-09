@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 
 //bring routes
 const authRoutes = require("./routes/authRoutes");
-const blogRoutes = require("./routes/blog");
+const routes = require("./routes/routes");
 const userRouters = require("./routes/userRoutes");
 
 //app
@@ -36,12 +36,12 @@ if (process.env.NODE_ENV == "development") {
 }
 
 //routes middleware
-app.use("/api", blogRoutes);
+app.use("/api", routes);
 app.use("/api", authRoutes);
 app.use("/api", userRouters);
 
 //port
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3306;
 app.listen(port, () => {
   console.log(`Your server is running on port ${port}`);
 });
