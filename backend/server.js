@@ -1,47 +1,31 @@
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-require("dotenv").config();
-const mongoose = require("mongoose");
-
-//bring routes
-const authRoutes = require("./routes/authRoutes");
-const blogRoutes = require("./routes/blog");
-const userRouters = require("./routes/userRoutes");
-
-//app
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const routes =require('./routes');
+const path = require("path");
 const app = express();
+const PORT = process.env.PORT || 8000
 
-//database connect
-mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("DB Connected")).catch = (err) => {
-  console.log(err.message);
-};
+app.use(cors())
+app.use(express.json())
 
-//middleware
-app.use(morgan("dev"));
-app.use(bodyParser.json());
-app.use(cookieParser());
-
-//cors
-if (process.env.NODE_ENV == "development") {
-  app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config()
 }
 
-//routes middleware
-app.use("/api", blogRoutes);
-app.use("/api", authRoutes);
-app.use("/api", userRouters);
+try {
+	mongoose.connect(process.env.MONGO_DB_SECRET, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	console.log('MongoDb connected successfully!')
+} catch (error) {
+	console.log(error)
+}
 
-//port
-const port = process.env.PORT || 8000;
-app.listen(port, () => {
-  console.log(`Your server is running on port ${port}`);
-});
+app.use("/files", express.static(path.resolve(__dirname, "..", "files")))
+app.use(routes);
+
+app.listen(PORT, () => {
+	console.log(`Listening on ${PORT}`)
+})
