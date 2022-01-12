@@ -15,7 +15,7 @@ const EventSchema = new mongoose.Schema({
     toJSON: {
         virtuals: true
     }
-})
+});
 
 EventSchema.virtual('thumbnail_url').get(function () { return `http://localhost:3306/files/${this.thumbnail}`})
 

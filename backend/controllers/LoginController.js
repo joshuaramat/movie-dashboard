@@ -24,12 +24,12 @@ module.exports = {
                     firstName: user.firstName, 
                     lastName: user.lastName
                 }
-            return res.json(userResponse)
-        }else{
-            return res.status(200).json({ message: "Email or password does not match!" })
-        }
+                return res.json(userResponse)
+            } else {
+                return res.status(200).json({ message: "Email or password does not match!" })
+            }
 
-        }catch (error) {
+        } catch (error) {
             throw Error(`Error while Authenticating a User ${error}`)
 
         }
